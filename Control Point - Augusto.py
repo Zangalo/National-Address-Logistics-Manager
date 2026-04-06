@@ -1,25 +1,28 @@
 import requests
 
-#Lista de CEPs
+# Lista de CEPs
 CEPS = [
-    "01001000",
-    "20040002",
-    "30140071",
-    "40010000",
-    "70040900",
-    "80010000",
-    "90010000",
-    "69005000",
-    "66010000",
-    "64000000",
-    "69050510"
+    "01001-000", "01310-000", "02011-000", "03345-000", "04567-000","88010-000","89201-000","88330-000",
+    "20010-000", "20550-000", "22290-240", "22775-040","30110-000", "31030-000", "31515-000","70040-010",
+    "70800-000","40010-000", "41820-000", "41950-000","80010-000", "80530-000","90010-000", "90450-000",
+    "88010-000","60010-000", "60830-000","50010-000", "50740-000","69005-000", "69085-000","66010-000",
+    "64000-000","59010-000","57010-000","49010-000","77001-000","76801-000","69301-000","68900-000",
+    "75000-000", "75800-000","78005-000", "78700-000","79002-000","65010-000","69900-000","68005-000"
 ]
 
-#Função para consultar API ViaCEP
+# Mapeamento de estados para regiões
+REGIOES = {
+    "Norte": ["AC", "AP", "AM", "PA", "RO", "RR", "TO"],
+    "Nordeste": ["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"],
+    "Centro-Oeste": ["DF", "GO", "MT", "MS"],
+    "Sudeste": ["SP", "RJ", "MG", "ES"],
+    "Sul": ["PR", "RS", "SC"]
+}
+
+# Função para consultar API ViaCEP
 def buscar_endereco(cep):
     cep = cep.replace("-", "").strip()
 
-    # Validação simples
     if len(cep) != 8 or not cep.isdigit():
         print(f"CEP inválido: {cep}")
         return None
@@ -32,7 +35,6 @@ def buscar_endereco(cep):
 
         dados = resposta.json()
 
-        # ViaCEP retorna {"erro": true} se não existir
         if "erro" in dados:
             print(f"CEP não encontrado: {cep}")
             return None
